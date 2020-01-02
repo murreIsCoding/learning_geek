@@ -1,0 +1,18 @@
+select "stbihgu_poor_opticalpower_20190918" , count(*) from stbihgu_poor_opticalpower_20190918 union all
+select "stbihgu_poor_opticalpower_20190917" , count(*) from stbihgu_poor_opticalpower_20190917 union all
+select "stbihgu_poor_opticalpower_20190916" , count(*) from stbihgu_poor_opticalpower_20190916 union all
+select "stbihgu_poor_opticalpower_20190915" , count(*) from stbihgu_poor_opticalpower_20190915 union all
+select "stbihgu_poor_opticalpower_20190914" , count(*) from stbihgu_poor_opticalpower_20190914 union all
+select "stbihgu_poor_opticalpower_20190913" , count(*) from stbihgu_poor_opticalpower_20190913 union all
+select "stbihgu_poor_opticalpower_20190912" , count(*) from stbihgu_poor_opticalpower_20190912 union all
+select "stbihgu_poor_opticalpower_20190911" , count(*) from stbihgu_poor_opticalpower_20190911 union all
+select "stbihgu_poor_opticalpower_20190910" , count(*) from stbihgu_poor_opticalpower_20190910 union all
+select "stbihgu_poor_opticalpower_20190909" , count(*) from stbihgu_poor_opticalpower_20190909 union all
+select "stbihgu_poor_opticalpower_20190908" , count(*) from stbihgu_poor_opticalpower_20190908 union all
+select "stbihgu_poor_opticalpower_20190907" , count(*) from stbihgu_poor_opticalpower_20190907 union all
+select "stbihgu_poor_opticalpower_20190906" , count(*) from stbihgu_poor_opticalpower_20190906 union all
+select "stbihgu_poor_opticalpower_20190905" , count(*) from stbihgu_poor_opticalpower_20190905 union all
+select "stbihgu_poor_opticalpower_20190904" , count(*) from stbihgu_poor_opticalpower_20190904 union all
+select "stbihgu_poor_opticalpower_20190903" , count(*) from stbihgu_poor_opticalpower_20190903 union all
+select "stbihgu_poor_opticalpower_20190902" , count(*) from stbihgu_poor_opticalpower_20190902 union all
+select "stbihgu_poor_opticalpower_20190901" , count(*) from stbihgu_poor_opticalpower_20190901 ;
