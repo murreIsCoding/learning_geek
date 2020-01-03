@@ -43,8 +43,25 @@ public class RedisMetricsStorage implements MetricsStorage {
 
     @Override
     public List<RequestInfo> getRequestInfosByDuration(String apiName, long startTimestamp, long endTimestamp) {
-        //...
-        return null;
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            Gson gson = new Gson();
+            Set<String> strs = jedis.zrangeByScore(apiName, startTimestamp, endTimestamp);
+            List<RequestInfo> requestInfos = new ArrayList<>();
+            for (String str : strs) {
+                RequestInfo requestInfo = gson.fromJson(str, RequestInfo.class);
+                requestInfos.add(requestInfo);
+            }
+            return requestInfos;
+        } finally {
+            // You have to close jedis object. If you don't close then
+            // it doesn't release back to pool and you can't get a new
+            // resource from pool.
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
     }
 
     @Override
@@ -55,14 +72,14 @@ public class RedisMetricsStorage implements MetricsStorage {
             Gson gson = new Gson();
             Set<String> keyset = jedis.keys("*");
             Map<String, List<RequestInfo>> map = new LinkedHashMap<>();
-            for (String key : keyset){
-                Set<String> strs = jedis.zrangeByScore(key,startTimestamp,endTimestamp);
+            for (String key : keyset) {
+                Set<String> strs = jedis.zrangeByScore(key, startTimestamp, endTimestamp);
                 List<RequestInfo> requestInfos = new ArrayList<>();
-                for (String str : strs){
-                    RequestInfo requestInfo = gson.fromJson(str,RequestInfo.class);
+                for (String str : strs) {
+                    RequestInfo requestInfo = gson.fromJson(str, RequestInfo.class);
                     requestInfos.add(requestInfo);
                 }
-                map.put(key,requestInfos);
+                map.put(key, requestInfos);
             }
             return map;
         } finally {
