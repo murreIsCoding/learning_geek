@@ -1,0 +1,25 @@
+领导选举
+使用ZooKeeper进行领导选举的一个简单方法是，在创建代表clients的“建议”的znode时
+使用SEQUENCE|EPHEMERAL标志。其思想是有一个znode，比如“/election”，
+这样每个znode都创建了一个子znode“/election/guidu-n_”，两个都是SEQUENCE|EPHEMERAL。
+使用两个都是SEQUENCE标志，ZooKeeper会自动向“/election”的子节点添加一个序列号，
+该序列号大于之前添加的序列号。创建带有最小附加序列号的znode的进程将成为leader。
+
+这还没完。观察领导者的失败是很重要的，这样在当前领导者失败的情况下，
+新客户就会作为新的领导者出现。一个简单的解决方案是让所有应用程序进程监视当前最小的znode，
+并在最小的znode离开时检查它们是否是新的leader(注意，如果leader失败，最小的znode将离开，
+因为该节点是临时的)。但是这会导致一种羊群效应:当当前的leader失败时，所有其他的进程都会收到一个通知，
+并执行getChildren on“/election”来获得当前的“/election”的子进程列表。如果客户端数量很大，
+则会导致ZooKeeper服务器必须处理的操作数量激增。为了避免羊群效应，只要观察znode序列上的
+仅比自身小的znode就足够了。如果收到了这个小znode消失的通知，那么我就成为了新的leader，因为没有比我更小的
+了。注意，这避免了羊群效应，因为没有让所有客户端都观看相同的znode。
+
+以下是伪代码：
+假设ELECTION是用于选主的路径。为了竞选主节点：
+1.创建znode z路径为"ELECTION/guid-n_"并同时使用SEQUENCE和EPHEMERAL
+2.假设C是"ELECTION"的子节点集，i是z的序列号
+3.监视"ELECTION/guid-n_j"，j是仅次于自己的序列号。j<i且在C中存在n_j节点
+在被监视节点删除后收到通知：
+1.假设C是ELECTION最新的子节点集
+2.如果z是C中最小的节点，则进行主节点的工作
+3.不然监视"ELECTION/guid-n_j"，j是仅次于自己的序列号。j<i且在C中存在n_j节点

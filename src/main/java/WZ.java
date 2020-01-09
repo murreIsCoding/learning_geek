@@ -1,7 +1,4 @@
 public class WZ {
-
-
-
     public static  class TheStruck{
         int sum;
         int count ;
