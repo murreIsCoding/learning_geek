@@ -1,0 +1,14 @@
+redis sentinal 哨兵  文档
+
+redis sentinel 为redis提供高可用。实际上，这意味着使用Sentinel可以创建Redis部署，
+该部署可以在无需人工干预的情况下抵抗某些类型的故障。
+
+Sentinel提提供了其他一些附属地任务，比如 监控,通知,充当客户端的配置提供者。
+从大体上看，sentinel提供了以下这些能力:
+1监控 。Sentinel会经常地检查你的master（主节点）和repica(从节点)如期地工作中。
+2通知。Sentinel可以在某个Redis节点出现错误时，通过API通知系统管理员或其他程序。
+3故障时自动切换。 如果master不正常工作，Sentinel会开始故障切换(failover)进程，其中一个
+从节点被提升为主节点，其他的从节点将被重新配置指向新的主节点，然后使用当前redis服务的
+应用程序将会收到通知，关于新的连接地址。
+4配置提供者。Sentinel作为客户服务发现的授权来源：客户端们会连接Sentinels，询问当前redis服务的主节点的地址。
+
