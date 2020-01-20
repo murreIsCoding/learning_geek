@@ -1,37 +1,38 @@
-使用Redis作为一个LRU缓存
+## 使用Redis作为一个LRU缓存
 
-  当redis作为一个缓存时，当你需要添加新数据时自动地移除旧数据，是非常方便的一件事情。
+当redis作为一个缓存时，当你需要添加新数据时自动地移除旧数据，是非常方便的一件事情。
 这是所有开发者都熟知的一点，因为另一个受欢迎的缓存系统mencached的默认行为。
 
   LRU实际上只是回收策略中的一种。本页包含的内容一般主题，像介绍用redis中的maxmemory指令来限制
-可用内存到一个合适的大小，也深入介绍了Redis使用的LRU算法---实际上是一种近似的LRU
+可用内存到一个合适的大小，也深入介绍了Redis使用的LRU算法---实际上是一种近似的LRU  
+从Redis 4.0版本开始，引入了一个新的LFU(最不常用的)回收策略。这将在本文档的单独部分中讨论。
 
-：从Redis 4.0版本开始，引入了一个新的LFU(最不常用的)回收策略。这将在本文档的单独部分中讨论。
 
-Maxmemory配置指令
+### Maxmemory配置指令
   maxmemory配置指令用于配置Redis来为数据集使用指定数量的内存。可以使用Redis .conf文件来设置配置指令，或者稍后在运行时使用CONFIG set命令。
 例如，为了配置100 mb的内存限制，可以在redis.conf文件中使用以下指令。
-maxmemory 100mb
-  将maxmemory设置为0将导致没有内存限制。这是64位系统的默认行为，而32位系统使用3GB的隐式内存限制。
+- maxmemory 100mb
+
+将maxmemory设置为0将导致没有内存限制。这是64位系统的默认行为，而32位系统使用3GB的隐式内存限制。
 当达到指定的内存量时，可以在不同的行为(称为策略)之间进行选择。
 Redis可以在调用可能导致更多内存被使用的命令时抛出错误，
 或者它可以删除一些旧数据，以便在每次添加新数据时回到指定的限制之内。
 
 
-回收策略
+### 回收策略
 当达到最大内存限制时，使用maxmemory-policy配置指令配置Redis的确切行为。
 以下是所有可用的策略：
-  noeviction(不回收):当客户端尝试运行会增加使用内存的指令时抛出错误（大多数write指令，除了
-  DEL 和其他）
-  allkey-lru:尝试删除最近最少使用的keys
-  volatile-lru:尝试删除最近最少使用的keys，但仅限于那些有设置了expire的key(过期时间)
-  allkeys-random:随机回收
-  volatile-random:在设置了expire的keys中随机回收
-  volatile-ttl:对设定了过期时间，但是time to live 时间较短的key进行回收
+* noeviction(不回收):当客户端尝试运行会增加使用内存的指令时抛出错误（大多数write指令，除了
+* DEL 和其他）
+* allkey-lru:尝试删除最近最少使用的keys
+* volatile-lru:尝试删除最近最少使用的keys，但仅限于那些有设置了expire的key(过期时间)
+* allkeys-random:随机回收
+* volatile-random:在设置了expire的keys中随机回收
+* volatile-ttl:对设定了过期时间，但是time to live 时间较短的key进行回收
 
-  volatile-lru, volatile-random and volatile-ttl 策略如果所有key都没有设置过期时间，
+volatile-lru, volatile-random and volatile-ttl 策略如果所有key都没有设置过期时间，
 那么将表现得和noeviction一样。
-  根据你的应用程序的访问模式来选择最合适的回收策略是很必要的，但是你可以在程序运行时重新选择策略，
+根据你的应用程序的访问模式来选择最合适的回收策略是很必要的，但是你可以在程序运行时重新选择策略，
 然后通过Redis INFO指令的数据观察缓存命中和不命中的数量 来调优你的设置。
 
 总的来说，作为一个经验法则：
@@ -42,14 +43,14 @@ Redis可以在调用可能导致更多内存被使用的命令时抛出错误，
 
   volatile-lru和volatile-random策略在希望使用单个实例进行缓存和拥有一组持久键时非常有用。
 然而，运行两个Redis实例来解决这样的问题通常是一个更好的主意。
-  值得注意的是，为key设置expire将会消耗内存，因此使用allkeys-lru这样的策略会提高内存利用率，
+> 值得注意的是，为key设置expire将会消耗内存，因此使用allkeys-lru这样的策略会提高内存利用率，
 因为在内存压力下不需要设置expire来清除键值。
 
-回收过程是如何工作的：
+### 回收过程是如何工作的：
 理解一下的回收过程很重要：
-1 某个客户端发起新指令，造成更多的数据被添加。
-2 Redis检查内存使用量，如果比maxmemory limit更大,开始根据回收策略来回收keys
-3 新指令执行，循环继续。
+1. 某个客户端发起新指令，造成更多的数据被添加。
+2. Redis检查内存使用量，如果比maxmemory limit更大,开始根据回收策略来回收keys
+3. 新指令执行，循环继续。
 
 所以我们不断地超过内存限制，超过，然后回退到边界内。
 如果一个命令造成大量内存被使用(比如一个大集合的交集存储到一个新键中)，可能会明显超过内存limit。
