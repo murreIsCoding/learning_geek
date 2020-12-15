@@ -84,7 +84,7 @@ public class MinCountChange {
         //解
         int problem;
         if (res == Integer.MAX_VALUE) {
-            problem = -1;//没有接
+            problem = -1;//没有解
         } else {
             problem = res;
         }
