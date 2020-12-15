@@ -10,15 +10,15 @@ public class MinEditDistanceWithDpAndPath {
 
     //操作次数
     static int ops_times;
-    String s1 = "今天是个好日子，我来到公司划水水好开心";
-    String s2 = "今天肿了，要写公司日志了好伤心";
+    String s1 = "我想玩游戏，不想打工";
+    String s2 = "我不想打工，想玩游戏";
     //DP Table
     Node[][] dp = new Node[s1.length() + 1][s2.length() + 1];
 
     public static void main(String[] args) {
         MinEditDistanceWithDpAndPath minEditDistanceWithDp = new MinEditDistanceWithDpAndPath();
         ops_times = minEditDistanceWithDp.minDistance().val;
-        System.out.println("最少需要"+ops_times+"个处理步骤");
+        System.out.println("最少需要" + ops_times + "个处理步骤");
         minEditDistanceWithDp.printPath();
     }
 
