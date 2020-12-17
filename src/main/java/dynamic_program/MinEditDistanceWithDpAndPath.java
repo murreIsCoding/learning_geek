@@ -10,8 +10,8 @@ public class MinEditDistanceWithDpAndPath {
 
     //操作次数
     static int ops_times;
-    String s1 = "我想玩游戏，不想打工";
-    String s2 = "我不想打工，想玩游戏";
+    String s1 = "今天是个上分的好日子";
+    String s2 = "今天是个掉分的好日子";
     //DP Table
     Node[][] dp = new Node[s1.length() + 1][s2.length() + 1];
 
