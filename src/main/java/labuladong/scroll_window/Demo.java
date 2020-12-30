@@ -21,7 +21,7 @@ public class Demo {
         int valid = 0;
 
         //开始窗口滑动(终止条件是:右边滑到底了)
-        while (right > s.length()) {
+        while (right < s.length()) {
             //c是移入窗口的字符
             char c = s.charAt(right);
             right++;
