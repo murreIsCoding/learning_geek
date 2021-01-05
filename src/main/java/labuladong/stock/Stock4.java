@@ -6,7 +6,7 @@ package labuladong.stock;
 public class Stock4 {
     public static void main(String[] args) {
         int[] prices = {1, 2, 3, 4};
-        int fee = 1;
+        int fee = 1;//手续费
         System.out.println(max_value(prices, fee));
         System.out.println(max_value1(prices, fee));
     }
