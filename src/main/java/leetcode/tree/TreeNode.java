@@ -2,14 +2,15 @@ package leetcode.tree;
 
 //Definition for a binary tree node.
 public class TreeNode {
-    public int val;
+    public Integer val;
     public TreeNode left;
     public TreeNode right;
+    public TreeNode next;
 
     public TreeNode() {
     }
 
-    TreeNode(int x) {
+    public TreeNode(Integer x) {
         val = x;
     }
 
@@ -27,8 +28,8 @@ public class TreeNode {
         root.left = node1;
         root.right = node2;
 //
-//        node1.left = node3;
-//        node1.right = node4;
+        node1.left = node3;
+        node1.right = node4;
 
         node2.left = node5;
         node2.right = node6;

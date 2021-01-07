@@ -1,7 +1,7 @@
 package labuladong.stock;
 
 /**
- * 股票问题变种第一题,K=2
+ * 股票问题变种第一题,K=2,同K=any_value
  */
 public class Stock5 {
     public static void main(String[] args) {
