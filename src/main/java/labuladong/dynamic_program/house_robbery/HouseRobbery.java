@@ -1,4 +1,4 @@
-package labuladong.house_robbery;
+package labuladong.dynamic_program.house_robbery;
 
 import labuladong.binary_tree.ConstructTree;
 import leetcode.tree.TreeNode;
