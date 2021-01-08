@@ -18,14 +18,16 @@ public class BinaryTree {
 //        flatten(root);
         // 将刚刚创建的树打印出来
 //        TreeOperation.show(root);
-//        System.out.println("BSD检验结果" + isValid_BSD(root, null, null));
+        System.out.println("BSD检验结果" + isValid_BSD(root, null, null));
 //        System.out.println("BSD搜索结果" + isInBSD(root, 12));
-        insertIntoBST(root, 10);
-        insertIntoBST(root, 8);
-        insertIntoBST(root, 9);
-        insertIntoBST(root, 11);
-        insertIntoBST(root, 12);
+//        insertIntoBST(root, 10);
+//        insertIntoBST(root, 8);
+//        insertIntoBST(root, 9);
+//        insertIntoBST(root, 11);
+//        insertIntoBST(root, 12);
+        delete(root, 4);
         TreeOperation.show(root);
+        System.out.println("BSD检验结果" + isValid_BSD(root, null, null));
     }
 
     /**
@@ -182,14 +184,39 @@ public class BinaryTree {
      */
     static TreeNode delete(TreeNode root, int val) {
         if (root == null) {
-            return new TreeNode(val);
+            return null;
+        }
+        if (root.val == val) {
+            //如果当前就是
+            //需要分3种情况处理
+            //1.下面没有子节点,直接删除
+            //2.下面只有一个子节点,那么直接让该子节点代替当前节点
+            //3.如果下面有2个子节点,那么需要找到左子树中最大的节点来替换自己.或者找到右子树中最小的节点来替代自己.然后继续删除
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            } else {
+                TreeNode minRight = getMin(root.right);
+                int temp = root.val;
+                root.val = minRight.val;
+                minRight.val = temp;
+                root.right = delete(root.right, val);
+            }
         }
         if (val > root.val) {
-            root.right = insertIntoBST(root.right, val);
+            root.right = delete(root.right, val);
         }
         if (val < root.val) {
-            root.left = insertIntoBST(root.left, val);
+            root.left = delete(root.left, val);
         }
         return root;
+    }
+
+    private static TreeNode getMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
     }
 }
