@@ -53,6 +53,6 @@ public class ConstructTree {
     public static void main(String[] args) {
         Integer[] nums = {5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1};
         TreeNode root = ConstructTree.constructTree(nums);
-        System.out.println(root);
+        TreeOperation.show(root);
     }
 }
