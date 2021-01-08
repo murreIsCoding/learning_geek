@@ -10,13 +10,21 @@ public class BinaryTree {
 //        System.out.println(count(root));
 
         // 根据给定的数组创建一棵树
-        TreeNode root = ConstructTree.constructTree(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        TreeNode root = ConstructTree.constructTree(new Integer[]{4, 2, 6, 1, 3, 5, 7});
         // 将刚刚创建的树打印出来
         TreeOperation.show(root);
         //操作
-        invertTree(root);
+//        invertTree(root);
 //        flatten(root);
         // 将刚刚创建的树打印出来
+//        TreeOperation.show(root);
+//        System.out.println("BSD检验结果" + isValid_BSD(root, null, null));
+//        System.out.println("BSD搜索结果" + isInBSD(root, 12));
+        insertIntoBST(root, 10);
+        insertIntoBST(root, 8);
+        insertIntoBST(root, 9);
+        insertIntoBST(root, 11);
+        insertIntoBST(root, 12);
         TreeOperation.show(root);
     }
 
@@ -100,5 +108,88 @@ public class BinaryTree {
         }
         //把原来的right接上
         last.right = right;
+    }
+
+    /**
+     * 是不是一个合法的二叉搜索树,即左子树所有节点都小于根节点 ,右子树所有节点大于根节点
+     *
+     * @return
+     */
+    static boolean isValid_BSD(TreeNode root, Integer min, Integer max) {
+        if (root == null) {
+            return true;//到底了就return true
+        }
+        if (min != null && root.val < min) {
+            return false;
+        }
+        if (max != null && root.val > max) {
+            return false;
+        }
+        return isValid_BSD(root.left, min, root.val)
+                && isValid_BSD(root.right, root.val, max);
+    }
+
+    /**
+     * 利用二叉搜索树的特性进行搜索
+     *
+     * @param root
+     * @param target
+     * @return
+     */
+    static boolean isInBSD(TreeNode root, int target) {
+        if (root == null) {
+            return false;
+        }
+        if (root.val == target) {
+            return true;
+        }
+        if (target < root.val) {
+            return isInBSD(root.left, target);
+        }
+        if (target > root.val) {
+            return isInBSD(root.right, target);
+        }
+        return false;
+    }
+
+    /**
+     * 如果我是空的,那我就返回新节点
+     * 如果不是,那就根据val大小把这个东西插入到我的左右节点,并返回自身
+     *
+     * @param root 节点
+     * @param val  值
+     * @return 返回根节点
+     */
+    static TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val > root.val) {
+            root.right = insertIntoBST(root.right, val);
+        }
+        if (val < root.val) {
+            root.left = insertIntoBST(root.left, val);
+        }
+        return root;
+    }
+
+    /**
+     * 删除,比较复杂
+     *
+     * @param root
+     * @param val
+     * @return
+     */
+    static TreeNode delete(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val > root.val) {
+            root.right = insertIntoBST(root.right, val);
+        }
+        if (val < root.val) {
+            root.left = insertIntoBST(root.left, val);
+        }
+        return root;
     }
 }
