@@ -1,4 +1,4 @@
-package labuladong.stock;
+package labuladong.dynamic_program.stock;
 
 /**
  * 给定一个数组，它的第i个元素是这只股票第i天的价格

@@ -1,4 +1,4 @@
-package labuladong.stock;
+package labuladong.dynamic_program.stock;
 
 /**
  * 股票问题变种第一题,K=2,同K=any_value
