@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class NSumTest {
     NSum nSum;
@@ -54,13 +53,13 @@ public class NSumTest {
 //            int num = random.nextInt(n) - k;
 //            nums[i] = num;
 //        }
-        int[] nums = {3,5,7,9,4,3,6,7,2,8,1,2};
+        int[] nums = {1, 2, 3, 129, 4, 5, 6, 549, 7, 8, 9, 765, 10, 11, 21, 421, 23, 532, 8, 123, 2, 3, 4, 5, 981};
 
         //先排序
         Arrays.sort(nums);
         System.out.println(ArrayUtil.toString(nums));
 
-        int[][] res = nSum.nSum_many(nums, 5, 0, 27);
+        int[][] res = nSum.nSum_many(nums, 7, 0, 3500);
 
         System.out.println("结果有" + res.length + "个");
         for (int i = 0; i < res.length; i++) {
