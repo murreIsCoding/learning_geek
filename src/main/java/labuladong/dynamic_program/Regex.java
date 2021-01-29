@@ -2,6 +2,7 @@ package labuladong.dynamic_program;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 正则表达式 相关题目
@@ -109,6 +110,20 @@ public class Regex {
         public Index(int index1, int index2) {
             this.index1 = index1;
             this.index2 = index2;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Index index = (Index) o;
+            return index1 == index.index1 &&
+                    index2 == index.index2;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(index1, index2);
         }
     }
 
